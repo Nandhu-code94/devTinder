@@ -3,23 +3,36 @@ const express = require("express");
 const app = express();
 
 
-// This will only handle GET call to /user
-app.get("/user",(req,res)=>{
-    res.send({firstname:"Nandhu", lastName:"moorthi"})
-})
+// // This will only handle GET call to /user
+// app.get("/user",(req,res)=>{
+//     res.send({firstname:"Nandhu", lastName:"moorthi"})
+// })
 
-app.post("/user",(req,res)=>{
-    console.log("Save Data to the database");
-    res.send("Data successfully saved to the database");
-})
-app.delete("/user",(req,res)=>{
-    res.send("Deleted successfully");
-})
+// app.post("/user",(req,res)=>{
+//     console.log("Save Data to the database");
+//     res.send("Data successfully saved to the database");
+// })
+// app.delete("/user",(req,res)=>{
+//     res.send("Deleted successfully");
+// })
 
-// this will match all the HTTP method API calls to /test
-app.use("/test", (req, res) => {
-    res.send("test from the server");
-})
+// // this will match all the HTTP method API calls to /test
+// app.use("/test", (req, res) => {
+//     res.send("test from the server");
+// })
+
+app.use("/user",
+    [(req, res, next) => {
+        console.log("consoling")
+        next();
+        console.log("its coming again")
+        res.send("resolved")
+    },
+    (req, res) => {
+        console.log("2nd consoling")
+        res.send("2nd resolved")
+    }]
+)
 app.listen(3000, () => {
     console.log("Server is successfully listeninig on port 3000");
 });
