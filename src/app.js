@@ -2,37 +2,25 @@ const express = require("express");
 
 const app = express();
 
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-// // This will only handle GET call to /user
-// app.get("/user",(req,res)=>{
-//     res.send({firstname:"Nandhu", lastName:"moorthi"})
-// })
+// handle Auth middlewares for all GET, POST, ... requests
+app.use("/admin", adminAuth);
 
-// app.post("/user",(req,res)=>{
-//     console.log("Save Data to the database");
-//     res.send("Data successfully saved to the database");
-// })
-// app.delete("/user",(req,res)=>{
-//     res.send("Deleted successfully");
-// })
+app.post("/user/login", (req, res) => {
+    res.send("User posted Successfully...");
+});
 
-// // this will match all the HTTP method API calls to /test
-// app.use("/test", (req, res) => {
-//     res.send("test from the server");
-// })
+app.get("/user/data", userAuth, (req, res, next) => {
+    res.send("User Data Sent");
+});
+app.get("/admin/getAllData", (req, res, next) => {
+    res.send("All Data Sent");
+});
+app.get("/admin/deleteUser", (req, res, next) => {
+    res.send("deleted the user");
+});
 
-app.use("/user",
-    [(req, res, next) => {
-        console.log("consoling")
-        next();
-        console.log("its coming again")
-        res.send("resolved")
-    },
-    (req, res) => {
-        console.log("2nd consoling")
-        res.send("2nd resolved")
-    }]
-)
 app.listen(3000, () => {
     console.log("Server is successfully listeninig on port 3000");
 });
